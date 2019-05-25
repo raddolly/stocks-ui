@@ -1,0 +1,66 @@
+<html>
+
+<head>
+  <!-- Stylesheets-->
+  <link rel="stylesheet"
+        href="/stylesheets/bootstrap.min.css">
+  <link rel="stylesheet"
+        href="/stylesheets/bootstrap-theme.min.css">
+  <link rel="stylesheet"
+        href="/stylesheets/sb-admin-2.min.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet"
+        href="/stylesheets/login-form.css">
+  <link rel="stylesheet"
+        href="/stylesheets/starter.css">
+
+  <link rel="stylesheet"
+        href="/stylesheets/font-awesome.min.css">
+  <link rel="stylesheet"
+        href="/stylesheets/style.css">
+
+  <!--Scripts-->
+  <script type="text/javascript"
+          src="https://unpkg.com/amazon-quicksight-embedding-sdk@1.0.1/dist/quicksight-embedding-js-sdk.min.js"></script>
+  <script type="text/javascript">
+    function embedDashboard() {
+      var xmlhttp = new XMLHttpRequest();
+      xmlhttp.onreadystatechange = function () {
+        if (xmlhttp.readyState == XMLHttpRequest.DONE) {   // XMLHttpRequest.DONE == 4
+          if (xmlhttp.status == 200) {
+            var response = JSON.parse(xmlhttp.responseText);
+            var containerDiv = document.getElementById("dashboardContainer");
+            var params = {
+              url: response.EmbedUrl,
+              container: containerDiv,
+              height: "94%",
+              width: "100%",
+              scrolling: "auto"
+            };
+            var dashboard = QuickSightEmbedding.embedDashboard(params);
+          }
+          else if (xmlhttp.status == 400) {
+            alert('There was an error 400');
+          }
+          else {
+            alert('something else other than 200 was returned');
+          }
+        }
+      };
+      xmlhttp.open("GET", "https://23.22.204.53:3000/quicksight", true);
+      xmlhttp.send();
+    }
+
+  </script>
+  <title>Analytics Dashboard</title>
+</head>
+
+<body onload="embedDashboard()">
+    <a onclick="location.href='./sign_out.html';"
+    class="btn btn-default btn-lg"> <i class="fa fa-sign-out"></i> <span
+         class="network-name">Sign out</span></a>
+  <div id="dashboardContainer"></div>
+</body>
+
+</html>
